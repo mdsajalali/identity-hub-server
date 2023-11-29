@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 require("dotenv").config();
 const cors = require("cors");
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const port = process.env.PORT || 5000;
 
 // middleware
@@ -26,11 +26,52 @@ async function run() {
     await client.connect();
 
     // crud operations logic start here
-    const userManagementCollection = client.db("userManagementDB").collection("users");
+    const userManagementCollection = client
+      .db("userManagementDB")
+      .collection("users");
+
+    app.get("/users", async (req, res) => {
+      const result = await userManagementCollection.find().toArray();
+      res.send(result);
+    });
 
     app.post("/users", async (req, res) => {
       const user = req.body;
       const result = await userManagementCollection.insertOne(user);
+      res.send(result);
+    });
+
+    app.get("/users/:id", async (req, res) => {
+      const id = req.params.id;
+      const userId = { _id: new ObjectId(id) };
+      const result = await userManagementCollection.findOne(userId);
+      res.send(result);
+    });
+
+    app.put("/users/:id", async (req, res) => {
+      const id = req.params.id;
+      const userId = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updatedUser = req.body;
+
+      const user = {
+        $set: {
+          name: updatedUser.name,
+          email: updatedUser.email,
+        },
+      };
+      const result = await userManagementCollection.updateOne(
+        userId,
+        user,
+        options
+      );
+      res.send(result);
+    });
+
+    app.delete("/users/:id", async (req, res) => {
+      const id = req.params.id;
+      const userId = { _id: new ObjectId(id) };
+      const result = await userManagementCollection.deleteOne(userId);
       res.send(result);
     });
     // crud operations logic end here
