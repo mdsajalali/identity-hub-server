@@ -30,17 +30,20 @@ async function run() {
       .db("userManagementDB")
       .collection("users");
 
+    // get
     app.get("/users", async (req, res) => {
       const result = await userManagementCollection.find().toArray();
       res.send(result);
     });
 
+    // post
     app.post("/users", async (req, res) => {
       const user = req.body;
       const result = await userManagementCollection.insertOne(user);
       res.send(result);
     });
 
+    // update
     app.get("/users/:id", async (req, res) => {
       const id = req.params.id;
       const userId = { _id: new ObjectId(id) };
@@ -68,6 +71,7 @@ async function run() {
       res.send(result);
     });
 
+    // delete
     app.delete("/users/:id", async (req, res) => {
       const id = req.params.id;
       const userId = { _id: new ObjectId(id) };
