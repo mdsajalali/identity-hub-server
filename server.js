@@ -56,11 +56,14 @@ async function run() {
       const userId = { _id: new ObjectId(id) };
       const options = { upsert: true };
       const updatedUser = req.body;
+      console.log(updatedUser)
 
       const user = {
         $set: {
           name: updatedUser.name,
           email: updatedUser.email,
+          gender: updatedUser.gender,
+          status: updatedUser.status,
         },
       };
       const result = await userManagementCollection.updateOne(
