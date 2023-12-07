@@ -4,6 +4,7 @@
 
 ## Used Technology
 
+- [x] NODE.JS
 - [x] EXPRESS.JS
 - [x] MONGODB
 - [x] CORS

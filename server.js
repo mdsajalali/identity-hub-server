@@ -96,9 +96,9 @@ async function run() {
 run().catch(console.dir);
 
 app.get("/", (req, res) => {
-  res.send("User Management Server Running...");
+  res.send("Identity Hub Server Running...");
 });
 
 app.listen(port, () => {
-  console.log(`User Management Server Running On ${port}`);
+  console.log(`Identity Hub Server Running On ${port}`);
 });
